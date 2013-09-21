@@ -36,12 +36,12 @@ It's a simple interface but a generic implementation is added to the library.
 
 ## RouterResult 
 
-The result of a route action on the router is a route result object.
+The result of a route action on the router is a router result object.
 This object has 3 possible states:
 
-* empty: no route matched the incoming request
-* allowed methods are set: a route matched but not for the incoming request method
-* route is set: a route matched and should be invoked
+* __empty__: no route matched the incoming request
+* __allowed methods are set__: a route matched but not for the incoming request method
+* __route is set__: a route matched and should be invoked
 
 ## Code Sample
 
@@ -54,7 +54,7 @@ Check this code sample to see the possibilities of this library:
     use pallo\library\router\RouteContainer;
         
     // create a route with a path and a php callback
-    $route = new Route('/path/to/%action%', 'callback');
+    $route = new Route('/path/to/%action%', 'callback', 'id');
     // single method allowed
     $route->setAllowedMethods('GET'); 
     // multiple methods allowed, case does not matter
