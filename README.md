@@ -85,7 +85,7 @@ Check this code sample to see the possibilities of this library:
     $result->getAllowedMethods(); // array('GET' => true, 'POST' => true)
     
     // now with the right method
-    $result = $router->route('PUT', '/path/to/content');
+    $result = $router->route('GET', '/path/to/content');
     
     // a match with arguments set to the route
     $result->isEmpty(); // false
