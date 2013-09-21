@@ -87,7 +87,7 @@ Check this code sample to see the possibilities of this library:
     // now with the right method
     $result = $router->route('PUT', '/path/to/content');
     
-    // a match but nothing to invoke
+    // a match with arguments set to the route
     $result->isEmpty(); // false
     $result->getAllowedMethods(); // null
     $result->getRoute(); // Route instance
