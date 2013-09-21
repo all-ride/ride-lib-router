@@ -37,11 +37,12 @@ It's a simple interface but a generic implementation is added to the library.
 ## RouterResult 
 
 The result of a route action on the router is a router result object.
+
 This object has 3 possible states:
 
 * __empty__: no route matched the incoming request
 * __allowed methods are set__: a route matched but not for the incoming request method
-* __route is set__: a route matched and should be invoked
+* __route is set__: a route matched and the callback should be invoked
 
 ## Code Sample
 
@@ -93,7 +94,7 @@ Check this code sample to see the possibilities of this library:
     $result->getRoute(); // Route instance
     $result->getRoute()->getArguments(); // array('action' => 'content');
     
-    // let's test multi domain
+    // let's test multi domain support
     $route = new Route('/path', 'callback');
     $route->setBaseUrl('http://some-server.com');    
     $routeContainer->addRoute($route);
