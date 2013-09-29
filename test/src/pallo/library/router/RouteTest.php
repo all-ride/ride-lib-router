@@ -6,170 +6,170 @@ use \PHPUnit_Framework_TestCase;
 
 class RouteTest extends PHPUnit_Framework_TestCase {
 
-	public function testConstruct() {
-		$path = 'path';
-		$callback = 'callback';
+    public function testConstruct() {
+        $path = 'path';
+        $callback = 'callback';
 
-		$route = new Route($path, $callback);
+        $route = new Route($path, $callback);
 
-		$this->assertEquals('/' . $path, $route->getPath());
-		$this->assertEquals($callback, $route->getCallback());
-		$this->assertNull($route->getId());
-		$this->assertNull($route->getAllowedMethods());
-		$this->assertEmpty($route->getArguments());
-		$this->assertEmpty($route->getPredefinedArguments());
-		$this->assertFalse($route->isDynamic());
-		$this->assertNull($route->getLocale());
-		$this->assertNull($route->getBaseUrl());
+        $this->assertEquals('/' . $path, $route->getPath());
+        $this->assertEquals($callback, $route->getCallback());
+        $this->assertNull($route->getId());
+        $this->assertNull($route->getAllowedMethods());
+        $this->assertEmpty($route->getArguments());
+        $this->assertEmpty($route->getPredefinedArguments());
+        $this->assertFalse($route->isDynamic());
+        $this->assertNull($route->getLocale());
+        $this->assertNull($route->getBaseUrl());
 
-		$id = 'id';
-		$allowedMethod = 'GET';
+        $id = 'id';
+        $allowedMethod = 'GET';
 
-		$route = new Route($path, $callback, $id, $allowedMethod);
+        $route = new Route($path, $callback, $id, $allowedMethod);
 
-		$this->assertEquals($id, $route->getId());
-		$this->assertEquals(array($allowedMethod => true), $route->getAllowedMethods());
-	}
+        $this->assertEquals($id, $route->getId());
+        $this->assertEquals(array($allowedMethod => true), $route->getAllowedMethods());
+    }
 
-	/**
-	 * @dataProvider providerSetPathThrowsExceptionWhenThePathIsInvalid
-	 * @expectedException pallo\library\router\exception\RouterException
-	 */
-	public function testSetPathThrowsExceptionWhenThePathIsInvalid($path) {
-		new Route($path, 'callback');
-	}
+    /**
+     * @dataProvider providerSetPathThrowsExceptionWhenThePathIsInvalid
+     * @expectedException pallo\library\router\exception\RouterException
+     */
+    public function testSetPathThrowsExceptionWhenThePathIsInvalid($path) {
+        new Route($path, 'callback');
+    }
 
-	public function providerSetPathThrowsExceptionWhenThePathIsInvalid() {
-		return array(
-			array(null), // no value
-			array(''), // empty path
-			array('&é"(§è!'), // invalid string
-			array($this), // object
-			array(array()), // array
-		);
-	}
+    public function providerSetPathThrowsExceptionWhenThePathIsInvalid() {
+        return array(
+            array(null), // no value
+            array(''), // empty path
+            array('&é"(§è!'), // invalid string
+            array($this), // object
+            array(array()), // array
+        );
+    }
 
-	/**
-	 * @dataProvider providerSetIdThrowsExceptionWhenTheIdIsInvalid
-	 * @expectedException pallo\library\router\exception\RouterException
-	 */
-	public function testSetIdThrowsExceptionWhenTheIdIsInvalid($id) {
-		new Route('/', 'callback', $id);
-	}
+    /**
+     * @dataProvider providerSetIdThrowsExceptionWhenTheIdIsInvalid
+     * @expectedException pallo\library\router\exception\RouterException
+     */
+    public function testSetIdThrowsExceptionWhenTheIdIsInvalid($id) {
+        new Route('/', 'callback', $id);
+    }
 
-	public function providerSetIdThrowsExceptionWhenTheIdIsInvalid() {
-		return array(
-			array(''), // empty id
-			array($this), // object
-			array(array()), // array
-		);
-	}
+    public function providerSetIdThrowsExceptionWhenTheIdIsInvalid() {
+        return array(
+            array(''), // empty id
+            array($this), // object
+            array(array()), // array
+        );
+    }
 
-	public function testArguments() {
-		$route = new Route('/path', 'callback');
+    public function testArguments() {
+        $route = new Route('/path', 'callback');
 
-		$this->assertEquals(array(), $route->getArguments());
+        $this->assertEquals(array(), $route->getArguments());
 
-		$arguments = array('var1' => 'value1');
-		$route->setArguments($arguments);
+        $arguments = array('var1' => 'value1');
+        $route->setArguments($arguments);
 
-		$this->assertEquals($arguments, $route->getArguments());
-	}
+        $this->assertEquals($arguments, $route->getArguments());
+    }
 
-	public function testPredefinedArguments() {
-		$route = new Route('/path', 'callback');
+    public function testPredefinedArguments() {
+        $route = new Route('/path', 'callback');
 
-		$this->assertEquals(array(), $route->getPredefinedArguments());
+        $this->assertEquals(array(), $route->getPredefinedArguments());
 
-		$arguments = array('var1' => 'value1');
-		$route->setPredefinedArguments($arguments);
+        $arguments = array('var1' => 'value1');
+        $route->setPredefinedArguments($arguments);
 
-		$this->assertEquals($arguments, $route->getPredefinedArguments());
-	}
+        $this->assertEquals($arguments, $route->getPredefinedArguments());
+    }
 
-	public function testAllowedMethods() {
-		$route = new Route('/path', 'callback');
+    public function testAllowedMethods() {
+        $route = new Route('/path', 'callback');
 
-		$this->assertNull($route->getAllowedMethods());
-		$this->assertTrue($route->isMethodAllowed('ANY'));
+        $this->assertNull($route->getAllowedMethods());
+        $this->assertTrue($route->isMethodAllowed('ANY'));
 
-		$route->setAllowedMethods(array('POST', 'GET'));
-		$this->assertEquals(array('POST' => true, 'GET' => true), $route->getAllowedMethods());
-		$this->assertTrue($route->isMethodAllowed('GET'));
-		$this->assertTrue($route->isMethodAllowed('POST'));
-		$this->assertFalse($route->isMethodAllowed('ANY-OTHER'));
-	}
+        $route->setAllowedMethods(array('POST', 'GET'));
+        $this->assertEquals(array('POST' => true, 'GET' => true), $route->getAllowedMethods());
+        $this->assertTrue($route->isMethodAllowed('GET'));
+        $this->assertTrue($route->isMethodAllowed('POST'));
+        $this->assertFalse($route->isMethodAllowed('ANY-OTHER'));
+    }
 
-	/**
-	 * @dataProvider providerSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided
-	 * @expectedException pallo\library\router\exception\RouterException
-	 */
-	public function testSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided($allowedMethods) {
-		$route = new Route('/', 'callback');
-		$route->setAllowedMethods($allowedMethods);
-	}
+    /**
+     * @dataProvider providerSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided
+     * @expectedException pallo\library\router\exception\RouterException
+     */
+    public function testSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided($allowedMethods) {
+        $route = new Route('/', 'callback');
+        $route->setAllowedMethods($allowedMethods);
+    }
 
-	public function providerSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided() {
-		return array(
-			array($this), // object
-			array(array($this)), // array
-		);
-	}
+    public function providerSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided() {
+        return array(
+            array($this), // object
+            array(array($this)), // array
+        );
+    }
 
-	public function testGetUrl() {
-		$path = '/path/%var1%/to/%var2%/%var3%';
-		$route = new Route($path, 'callback');
-		$baseUrl = 'http://localhost';
+    public function testGetUrl() {
+        $path = '/path/%var1%/to/%var2%/%var3%';
+        $route = new Route($path, 'callback');
+        $baseUrl = 'http://localhost';
 
-		$url = $route->getUrl($baseUrl, array('var1' => 1, 'var2' => 'test', 'var3' => 'A encode test'));
+        $url = $route->getUrl($baseUrl, array('var1' => 1, 'var2' => 'test', 'var3' => 'A encode test'));
 
-		$this->assertEquals($baseUrl . '/path/1/to/test/A+encode+test', $url);
+        $this->assertEquals($baseUrl . '/path/1/to/test/A+encode+test', $url);
 
-		$baseUrl2 = 'http://server';
+        $baseUrl2 = 'http://server';
 
-		$route->setBaseUrl($baseUrl2);
+        $route->setBaseUrl($baseUrl2);
 
-		$url = $route->getUrl($baseUrl, array('var1' => 1, 'var2' => 'test', 'var3' => 'A encode test'));
+        $url = $route->getUrl($baseUrl, array('var1' => 1, 'var2' => 'test', 'var3' => 'A encode test'));
 
-		$this->assertEquals($baseUrl2 . '/path/1/to/test/A+encode+test', $url);
-	}
+        $this->assertEquals($baseUrl2 . '/path/1/to/test/A+encode+test', $url);
+    }
 
-	/**
-	 * @dataProvider providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided
-	 * @expectedException pallo\library\router\exception\RouterException
-	 */
-	public function testGetUrlThrowsExceptionWhenInvalidArgumentsProvided($arguments) {
-		$route = new Route('/path/%var1%/to/%var2%', 'callback');
+    /**
+     * @dataProvider providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided
+     * @expectedException pallo\library\router\exception\RouterException
+     */
+    public function testGetUrlThrowsExceptionWhenInvalidArgumentsProvided($arguments) {
+        $route = new Route('/path/%var1%/to/%var2%', 'callback');
 
-		$route->getUrl('http://localhost', $arguments);
-	}
+        $route->getUrl('http://localhost', $arguments);
+    }
 
-	public function providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided() {
-		return array(
-			array(array()), // expected argument not set
-			array(array('var1' => $this)), // invalid value
-		);
-	}
+    public function providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided() {
+        return array(
+            array(array()), // expected argument not set
+            array(array('var1' => $this)), // invalid value
+        );
+    }
 
-	public function testToString() {
-		$route = new Route('/path', 'callback');
+    public function testToString() {
+        $route = new Route('/path', 'callback');
 
-		$this->assertEquals('/path callback() s[*]', (string) $route);
+        $this->assertEquals('/path callback() s[*]', (string) $route);
 
-		$route = new Route('/path/%var1%', 'callback');
-		$route->setArguments(array('%var1%' => 'value1'));
+        $route = new Route('/path/%var1%', 'callback');
+        $route->setArguments(array('%var1%' => 'value1'));
 
-		$this->assertEquals('/path/%var1% callback(\'value1\') s[*]', (string) $route);
+        $this->assertEquals('/path/%var1% callback(\'value1\') s[*]', (string) $route);
 
-		$route = new Route('/path/%var1%', 'callback');
-		$route->setPredefinedArguments(array('%var1%' => 'value1'));
+        $route = new Route('/path/%var1%', 'callback');
+        $route->setPredefinedArguments(array('%var1%' => 'value1'));
 
-		$this->assertEquals('/path/%var1% callback(\'value1\') s[*]', (string) $route);
+        $this->assertEquals('/path/%var1% callback(\'value1\') s[*]', (string) $route);
 
-		$route = new Route('/path', array('Class', 'method'), 'id', array('POST', 'GET'));
-		$route->setIsDynamic(true);
+        $route = new Route('/path', array('Class', 'method'), 'id', array('POST', 'GET'));
+        $route->setIsDynamic(true);
 
-		$this->assertEquals('/path Class::method() d[GET|POST]', (string) $route);
+        $this->assertEquals('/path Class::method() d[GET|POST]', (string) $route);
 
-	}
+    }
 }

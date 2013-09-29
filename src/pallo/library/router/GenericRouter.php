@@ -18,61 +18,61 @@ class GenericRouter extends AbstractRouter {
      * @return RouterResult
      */
     protected function getRouteFromPath($method, $path, $baseUrl = null) {
-    	$path = new Route($path, 'callback');
-    	$pathTokens = $path->getPathTokens();
+        $path = new Route($path, 'callback');
+        $pathTokens = $path->getPathTokens();
 
-    	$allowedMethods = array();
-    	$resultRoute = null;
-    	$resultArguments = null;
+        $allowedMethods = array();
+        $resultRoute = null;
+        $resultArguments = null;
 
-    	$routes = $this->routeContainer->getRoutes();
-    	foreach ($routes as $route) {
-    		$routeTokens = $route->getPathTokens();
+        $routes = $this->routeContainer->getRoutes();
+        foreach ($routes as $route) {
+            $routeTokens = $route->getPathTokens();
 
-    		$routeArguments = $this->matchTokens($pathTokens, $routeTokens, $route->isDynamic());
-    		if ($routeArguments === false) {
-    			continue;
-    		}
+            $routeArguments = $this->matchTokens($pathTokens, $routeTokens, $route->isDynamic());
+            if ($routeArguments === false) {
+                continue;
+            }
 
-    		if ($resultRoute && count($resultArguments) < count($routeArguments)) {
-    			continue;
-    		}
+            if ($resultRoute && count($resultArguments) < count($routeArguments)) {
+                continue;
+            }
 
-    		if ($resultRoute && !$route->isMethodAllowed($method)) {
-    			$allowedMethods = array_merge($allowedMethods, $route->getAllowedMethods());
+            if ($resultRoute && !$route->isMethodAllowed($method)) {
+                $allowedMethods = array_merge($allowedMethods, $route->getAllowedMethods());
 
-    			continue;
-    		}
+                continue;
+            }
 
-    		$routeBaseUrl = $route->getBaseUrl();
-    		if ($baseUrl && $routeBaseUrl && $routeBaseUrl != $baseUrl) {
-    			continue;
-    		}
+            $routeBaseUrl = $route->getBaseUrl();
+            if ($baseUrl && $routeBaseUrl && $routeBaseUrl != $baseUrl) {
+                continue;
+            }
 
-    		$resultRoute = $route;
-    		$resultArguments = $routeArguments;
-    	}
+            $resultRoute = $route;
+            $resultArguments = $routeArguments;
+        }
 
-    	$result = new RouterResult();
+        $result = new RouterResult();
 
-    	if (!$resultRoute) {
-    		return $result;
-    	}
+        if (!$resultRoute) {
+            return $result;
+        }
 
-    	if ($resultRoute->isMethodAllowed($method)) {
-	    	$route = clone $resultRoute;
-	    	if ($resultArguments) {
-	    		$route->setArguments($resultArguments);
-	    	}
+        if ($resultRoute->isMethodAllowed($method)) {
+            $route = clone $resultRoute;
+            if ($resultArguments) {
+                $route->setArguments($resultArguments);
+            }
 
-	    	$result->setRoute($route);
-    	} else {
-    		$allowedMethods = array_merge($allowedMethods, $resultRoute->getAllowedMethods());
+            $result->setRoute($route);
+        } else {
+            $allowedMethods = array_merge($allowedMethods, $resultRoute->getAllowedMethods());
 
-    		$result->setAllowedMethods($allowedMethods);
-    	}
+            $result->setAllowedMethods($allowedMethods);
+        }
 
-    	return $result;
+        return $result;
     }
 
     /**
@@ -84,45 +84,45 @@ class GenericRouter extends AbstractRouter {
      * the matched arguments
      */
     protected function matchTokens(array $pathTokens, array $routeTokens, $isDynamic) {
-    	$arguments = array();
+        $arguments = array();
 
-    	$numPathTokens = count($pathTokens);
-    	$numRouteTokens = count($routeTokens);
+        $numPathTokens = count($pathTokens);
+        $numRouteTokens = count($routeTokens);
 
-    	if ($numPathTokens < $numRouteTokens) {
-    		return false;
-    	}
+        if ($numPathTokens < $numRouteTokens) {
+            return false;
+        }
 
-    	foreach ($routeTokens as $index => $routeToken) {
-    		$parameterName = substr($routeToken, 1, -1);
-    		$isParameter = $routeToken == '%' . $parameterName . '%';
+        foreach ($routeTokens as $index => $routeToken) {
+            $parameterName = substr($routeToken, 1, -1);
+            $isParameter = $routeToken == '%' . $parameterName . '%';
 
-    		if ($isParameter) {
-    			$arguments[$parameterName] = $pathTokens[$index];
+            if ($isParameter) {
+                $arguments[$parameterName] = $pathTokens[$index];
 
-    			continue;
-    		}
+                continue;
+            }
 
-    		if ($routeToken != $pathTokens[$index]) {
-    			return false;
-    		}
-    	}
+            if ($routeToken != $pathTokens[$index]) {
+                return false;
+            }
+        }
 
-    	if (!$isDynamic) {
-    		if ($numPathTokens != $numRouteTokens) {
-    			return false;
-    		}
+        if (!$isDynamic) {
+            if ($numPathTokens != $numRouteTokens) {
+                return false;
+            }
 
-    		return $arguments;
-    	}
+            return $arguments;
+        }
 
-    	$index = $numRouteTokens;
-    	while (isset($pathTokens[$index])) {
-    		$arguments[] = $pathTokens[$index];
-    		$index++;
-    	}
+        $index = $numRouteTokens;
+        while (isset($pathTokens[$index])) {
+            $arguments[] = $pathTokens[$index];
+            $index++;
+        }
 
-    	return $arguments;
+        return $arguments;
     }
 
 }

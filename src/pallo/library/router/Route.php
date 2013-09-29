@@ -98,14 +98,14 @@ class Route {
 
         $arguments = array();
         if ($this->predefinedArguments) {
-        	foreach ($this->predefinedArguments as $name => $value) {
-        		$arguments[$name] = var_export($value, true);
-        	}
+            foreach ($this->predefinedArguments as $name => $value) {
+                $arguments[$name] = var_export($value, true);
+            }
         }
         if ($this->arguments) {
-        	foreach ($this->arguments as $name => $value) {
-        		$arguments[$name] = var_export($value, true);
-        	}
+            foreach ($this->arguments as $name => $value) {
+                $arguments[$name] = var_export($value, true);
+            }
         }
 
         if ($arguments) {
@@ -132,20 +132,20 @@ class Route {
      * @throws pallo\ZiboException when the path is empty or invalid
      */
     protected function setPath($path) {
-    	if (!is_string($path) || $path === '') {
-    		throw new RouterException('Could not set the path of the route : path is empty or not a string.');
-    	}
+        if (!is_string($path) || $path === '') {
+            throw new RouterException('Could not set the path of the route : path is empty or not a string.');
+        }
 
-    	$regexHttpSegment = '(([a-zA-Z0-9]|[$+_.-]|%|[!*\'(),])|(%[0-9A-Fa-f][0-9A-Fa-f])|[;:@&=])*';
-    	$regexHttpPath = '/^' . $regexHttpSegment . '(\\/' . $regexHttpSegment . ')*$/';
+        $regexHttpSegment = '(([a-zA-Z0-9]|[$+_.-]|%|[!*\'(),])|(%[0-9A-Fa-f][0-9A-Fa-f])|[;:@&=])*';
+        $regexHttpPath = '/^' . $regexHttpSegment . '(\\/' . $regexHttpSegment . ')*$/';
 
-    	if (!preg_match($regexHttpPath, $path)) {
-    		throw new RouterException('Could not set the path of the route: ' . $path . ' is not a valid HTTP path');
-    	}
+        if (!preg_match($regexHttpPath, $path)) {
+            throw new RouterException('Could not set the path of the route: ' . $path . ' is not a valid HTTP path');
+        }
 
-    	if (substr($path, 0, 1) != '/') {
-    		$path = '/' . $path;
-    	}
+        if (substr($path, 0, 1) != '/') {
+            $path = '/' . $path;
+        }
 
         $this->path = $path;
     }
@@ -164,17 +164,17 @@ class Route {
      * @return array Array with the tokens of the path
      */
     public function getPathTokens() {
-    	if ($this->path === '/') {
-    		return array();
-    	}
+        if ($this->path === '/') {
+            return array();
+        }
 
-    	$path = $this->path;
+        $path = $this->path;
 
-    	if (substr($path, 0, 1) == '/') {
-    		$path = substr($path, 1);
-    	}
+        if (substr($path, 0, 1) == '/') {
+            $path = substr($path, 1);
+        }
 
-    	return explode('/', $path);
+        return explode('/', $path);
     }
 
     /**
@@ -186,9 +186,9 @@ class Route {
      * @return string Generated URL
      */
     public function getUrl($baseUrl, array $arguments = null) {
-    	if ($this->baseUrl) {
-    		$baseUrl = $this->baseUrl;
-    	}
+        if ($this->baseUrl) {
+            $baseUrl = $this->baseUrl;
+        }
 
         $path = $baseUrl;
 
@@ -198,15 +198,15 @@ class Route {
             $isArgument = $token == '%' . $argumentName . '%';
 
             if ($isArgument) {
-            	if (isset($arguments[$argumentName])) {
-	                if (!is_scalar($arguments[$argumentName])) {
-	                    throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $argumentName . ' is not a scalar value');
-	                }
+                if (isset($arguments[$argumentName])) {
+                    if (!is_scalar($arguments[$argumentName])) {
+                        throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $argumentName . ' is not a scalar value');
+                    }
 
-	                $path .= '/' . urlencode($arguments[$argumentName]);
-	            } else {
+                    $path .= '/' . urlencode($arguments[$argumentName]);
+                } else {
                     throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $argumentName . ' is not set');
-	            }
+                }
             } else {
                 $path .= '/' . $token;
             }
