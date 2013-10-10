@@ -2,6 +2,7 @@
 
 namespace pallo\library\router;
 
+use pallo\library\router\exception\RouterException;
 /**
  * Data container for a set of Route objects
  */
@@ -98,6 +99,24 @@ class RouteContainer {
      */
     public function getRoutes() {
         return $this->routes;
+    }
+
+    /**
+     * Gets the full URL for a route
+     * @param string $baseUrl Base URL of the system
+     * @param string $id Id of the route
+     * @param array $arguments Array with the argument name as key and the
+     * argument as value. The argument should be a scalar value which will be
+     * url encoded
+     * @return string Generated URL
+     */
+    public function getUrl($baseUrl, $id, array $arguments = null) {
+        $route = $this->getRouteById($id);
+        if (!$route) {
+            throw new RouterException('Could not get the URL for route ' . $id . ': no route found for the provided id');
+        }
+
+        return $route->getUrl($baseUrl, $arguments);
     }
 
 }

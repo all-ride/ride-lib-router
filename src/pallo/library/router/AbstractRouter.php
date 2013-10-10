@@ -27,7 +27,7 @@ abstract class AbstractRouter implements Router {
      * @return null
      */
     public function __construct(RouteContainer $routeContainer) {
-    	$this->setRouteContainer($routeContainer);
+        $this->setRouteContainer($routeContainer);
         $this->defaultCallback = null;
     }
 
@@ -37,7 +37,7 @@ abstract class AbstractRouter implements Router {
      * @return null
      */
     public function setRouteContainer(RouteContainer $routeContainer) {
-    	$this->routeContainer = $routeContainer;
+        $this->routeContainer = $routeContainer;
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class AbstractRouter implements Router {
      * @return null|string|array Callback of the default action
      */
     public function getDefaultCallback() {
-    	return $this->defaultCallback;
+        return $this->defaultCallback;
     }
 
     /**
@@ -77,7 +77,7 @@ abstract class AbstractRouter implements Router {
 
         $result = $this->getRouteFromPath($method, $path, $baseUrl);
         if (!$result->isEmpty()) {
-        	return $result;
+            return $result;
         }
 
         if ($this->defaultCallback && $path == '/') {
@@ -105,17 +105,17 @@ abstract class AbstractRouter implements Router {
      * @return string Path without the query arguments
      */
     protected function processPath($path) {
-    	// remove query string
+        // remove query string
         $positionQuestion = strpos($path, '?');
         if ($positionQuestion !== false) {
             $path = substr($path, 0, $positionQuestion);
         }
 
-    	// remove trailing slash
+        // remove trailing slash
         if ($path != '/') {
-        	if (substr($path, -1, 1) != '/') {
-            	$path = rtrim($path, '/');
-        	}
+            if (substr($path, -1, 1) != '/') {
+                $path = rtrim($path, '/');
+            }
         }
 
         return $path;
