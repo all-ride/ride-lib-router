@@ -343,6 +343,21 @@ class Route {
     }
 
     /**
+     * Gets an argument for the action
+     * @param string $name Name of the argument
+     * @param mixed $default Default value to return when the argument is not
+     * set
+     * @return mixed Argument value if set, provided default value otherwise
+     */
+    public function getArgument($name, $default = null) {
+        if (!isset($this->arguments[$name])) {
+            return $default;
+        }
+
+        return $this->arguments[$name];
+    }
+
+    /**
      * Sets the predefined arguments for the callback
      * @param array $arguments
      * @return null
