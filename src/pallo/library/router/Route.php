@@ -143,11 +143,7 @@ class Route {
             throw new RouterException('Could not set the path of the route: ' . $path . ' is not a valid HTTP path');
         }
 
-        if (substr($path, 0, 1) != '/') {
-            $path = '/' . $path;
-        }
-
-        $this->path = $path;
+        $this->path = '/' . trim($path, '/');
     }
 
     /**
