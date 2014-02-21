@@ -1,6 +1,6 @@
-# Pallo: Router Library
+# Ride: Router Library
 
-Router library of the PHP Pallo framework.
+Router library of the PHP Ride framework.
 
 Routing is used to translate a incoming HTTP request to a callback.
 
@@ -50,9 +50,9 @@ Check this code sample to see the possibilities of this library:
 
     <?php
     
-    use pallo\library\router\GenericRouter;
-    use pallo\library\router\Route;
-    use pallo\library\router\RouteContainer;
+    use ride\library\router\GenericRouter;
+    use ride\library\router\Route;
+    use ride\library\router\RouteContainer;
         
     // create a route with a path and a php callback
     $route = new Route('/path/to/%action%', 'callback', 'id');
