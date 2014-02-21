@@ -1,8 +1,8 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
-use pallo\library\router\exception\RouterException;
+use ride\library\router\exception\RouterException;
 
 /**
  * Abstract router implementation

@@ -1,13 +1,13 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
 use \PHPUnit_Framework_TestCase;
 
 class RouterResultTest extends PHPUnit_Framework_TestCase {
 
     /**
-     * @var pallo\library\router\RouterResult
+     * @var ride\library\router\RouterResult
      */
     protected $result;
 

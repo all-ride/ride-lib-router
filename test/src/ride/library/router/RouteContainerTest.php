@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
 use \PHPUnit_Framework_TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
 use \PHPUnit_Framework_TestCase;
 
@@ -33,7 +33,7 @@ class RouteTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider providerSetPathThrowsExceptionWhenThePathIsInvalid
-     * @expectedException pallo\library\router\exception\RouterException
+     * @expectedException ride\library\router\exception\RouterException
      */
     public function testSetPathThrowsExceptionWhenThePathIsInvalid($path) {
         new Route($path, 'callback');
@@ -51,7 +51,7 @@ class RouteTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider providerSetIdThrowsExceptionWhenTheIdIsInvalid
-     * @expectedException pallo\library\router\exception\RouterException
+     * @expectedException ride\library\router\exception\RouterException
      */
     public function testSetIdThrowsExceptionWhenTheIdIsInvalid($id) {
         new Route('/', 'callback', $id);
@@ -102,7 +102,7 @@ class RouteTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider providerSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided
-     * @expectedException pallo\library\router\exception\RouterException
+     * @expectedException ride\library\router\exception\RouterException
      */
     public function testSetAllowedMethodsThrowsExceptionWhenInvalidMethodsProvided($allowedMethods) {
         $route = new Route('/', 'callback');
@@ -136,7 +136,7 @@ class RouteTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided
-     * @expectedException pallo\library\router\exception\RouterException
+     * @expectedException ride\library\router\exception\RouterException
      */
     public function testGetUrlThrowsExceptionWhenInvalidArgumentsProvided($arguments) {
         $route = new Route('/path/%var1%/to/%var2%', 'callback');

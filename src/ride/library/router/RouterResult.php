@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
 /**
  * Data container for the result of a route action
