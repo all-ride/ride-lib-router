@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\library\router;
+namespace ride\library\router;
 
 /**
  * A router maps a URL path to a callback

@@ -1,6 +1,6 @@
 {
-    "name": "pallo/lib-router",
-    "description": "Router library of the Pallo framework",
+    "name": "ride/lib-router",
+    "description": "Router library of the Ride framework",
     "license": "MIT",
     "version": "0.1.4",
     "authors": [
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "pallo\\library\\router\\": ["src/", "test/src/"]
+            "ride\\library\\router\\": ["src/", "test/src/"]
         }
     }
 }
