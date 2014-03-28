@@ -2,7 +2,6 @@
 
 namespace ride\library\router;
 
-use ride\library\router\exception\RouterException;
 
 /**
  * Abstract router implementation
