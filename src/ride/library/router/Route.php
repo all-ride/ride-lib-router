@@ -91,7 +91,13 @@ class Route {
         $string = $this->path . ' ';
 
         if (is_array($this->callback) && count($this->callback) == 2 && isset($this->callback[0])) {
-            $string .= $this->callback[0] . (is_string($this->callback[0]) ? '::' : '->') . $this->callback[1];
+            if (is_object($this->callback[0])) {
+                $string .= get_class($this->callback[0]) . '->';
+            } else {
+                $string .= $this->callback[0] . '::';
+            }
+
+            $string .= $this->callback[1];
         } else {
             $string .= (string) $this->callback;
         }
@@ -129,7 +135,7 @@ class Route {
      * Sets the URL path
      * @param string $path
      * @return null
-     * @throws ride\ZiboException when the path is empty or invalid
+     * @throws \ride\library\router\exception\RouterException when the path is empty or invalid
      */
     protected function setPath($path) {
         if (!is_string($path) || $path === '') {
@@ -248,7 +254,7 @@ class Route {
     /**
      * Sets the id of this route
      * @param string $id The id of this route
-     * @throws ride\library\router\exception\RouterException
+     * @throws \ride\library\router\exception\RouterException
      */
     public function setId($id = null) {
         if ($id !== null && (!is_string($id) || $id == '')) {
@@ -270,7 +276,7 @@ class Route {
      * Sets the allowed methods for this route
      * @param null|string|array $allowedMethods The allowed methods of this route
      * @return null
-     * @throws ride\library\router\exception\RouterException
+     * @throws \ride\library\router\exception\RouterException
      */
     public function setAllowedMethods($allowedMethods = null) {
         if (empty($allowedMethods)) {
