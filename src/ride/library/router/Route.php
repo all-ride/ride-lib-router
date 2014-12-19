@@ -91,7 +91,13 @@ class Route {
         $string = $this->path . ' ';
 
         if (is_array($this->callback) && count($this->callback) == 2 && isset($this->callback[0])) {
-            $string .= $this->callback[0] . (is_string($this->callback[0]) ? '::' : '->') . $this->callback[1];
+            if (is_object($this->callback[0])) {
+                $string .= get_class($this->callback[0]) . '->';
+            } else {
+                $string .= $this->callback[0] . '::';
+            }
+
+            $string .= $this->callback[1];
         } else {
             $string .= (string) $this->callback;
         }
