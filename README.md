@@ -48,59 +48,60 @@ This object has 3 possible states:
 
 Check this code sample to see the possibilities of this library:
 
-    <?php
+```php
+<?php
+
+use ride\library\router\GenericRouter;
+use ride\library\router\Route;
+use ride\library\router\RouteContainer;
     
-    use ride\library\router\GenericRouter;
-    use ride\library\router\Route;
-    use ride\library\router\RouteContainer;
-        
-    // create a route with a path and a php callback
-    $route = new Route('/path/to/%action%', 'callback', 'id');
-    // single method allowed
-    $route->setAllowedMethods('GET'); 
-    // multiple methods allowed, case does not matter
-    $route->setAllowedMethods(array('GET', 'post'));
-    
-    // create a route container
-    $routeContainer = new RouteContainer();
-    // add the route to it
-    $routeContainer->addRoute($route);
-    
-    // create the router
-    $router = new GenericRouter($routeContainer);
-    // set a default action for the / request
-    $router->setDefaultCallback('callback');
-    
-    // match a route
-    $result = $router->route('GET', '/foo/bar');
-    
-    // no match
-    $result->isEmpty(); // true
-    
-    // let's try again
-    $result = $router->route('PUT', '/path/to/content');
-    
-    // a match but nothing to invoke
-    $result->isEmpty(); // false
-    $result->getRoute(); // null
-    $result->getAllowedMethods(); // array('GET' => true, 'POST' => true)
-    
-    // now with the right method
-    $result = $router->route('GET', '/path/to/content');
-    
-    // a match with arguments set to the route
-    $result->isEmpty(); // false
-    $result->getAllowedMethods(); // null
-    $result->getRoute(); // Route instance
-    $result->getRoute()->getArguments(); // array('action' => 'content');
-    
-    // let's test multi domain support
-    $route = new Route('/path', 'callback');
-    $route->setBaseUrl('http://some-server.com');    
-    $routeContainer->addRoute($route);
-    
-    $result = $router->route('GET', '/path', 'http://other-server.com');
-    $result->isEmpty(); // true
-    
-    $result = $router->route('GET', '/path', 'http://some-server.com');
-    $result->isEmpty(); // false
+// create a route with a path and a php callback
+$route = new Route('/path/to/%action%', 'callback', 'id');
+// single method allowed
+$route->setAllowedMethods('GET'); 
+// multiple methods allowed, case does not matter
+$route->setAllowedMethods(array('GET', 'post'));
+
+// create a route container
+$routeContainer = new RouteContainer();
+// add the route to it
+$routeContainer->addRoute($route);
+
+// create the router
+$router = new GenericRouter($routeContainer);
+// set a default action for the / request
+$router->setDefaultCallback('callback');
+
+// match a route
+$result = $router->route('GET', '/foo/bar');
+
+// no match
+$result->isEmpty(); // true
+
+// let's try again
+$result = $router->route('PUT', '/path/to/content');
+
+// a match but nothing to invoke
+$result->isEmpty(); // false
+$result->getRoute(); // null
+$result->getAllowedMethods(); // array('GET' => true, 'POST' => true)
+
+// now with the right method
+$result = $router->route('GET', '/path/to/content');
+
+// a match with arguments set to the route
+$result->isEmpty(); // false
+$result->getAllowedMethods(); // null
+$result->getRoute(); // Route instance
+$result->getRoute()->getArguments(); // array('action' => 'content');
+
+// let's test multi domain support
+$route = new Route('/path', 'callback');
+$route->setBaseUrl('http://some-server.com');    
+$routeContainer->addRoute($route);
+
+$result = $router->route('GET', '/path', 'http://other-server.com');
+$result->isEmpty(); // true
+
+$result = $router->route('GET', '/path', 'http://some-server.com');
+$result->isEmpty(); // false
