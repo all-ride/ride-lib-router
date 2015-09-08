@@ -54,7 +54,7 @@ Check this code sample to see the possibilities of this library:
 use ride\library\router\GenericRouter;
 use ride\library\router\Route;
 use ride\library\router\RouteContainer;
-   
+
 // create a route with a path and a php callback
 $route = new Route('/path/to/%action%', 'callback', 'id');
 // single method allowed
@@ -105,4 +105,3 @@ $result->isEmpty(); // true
 
 $result = $router->route('GET', '/path', 'http://some-server.com');
 $result->isEmpty(); // false
-```

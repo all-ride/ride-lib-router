@@ -25,6 +25,21 @@ class RouteContainerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(array('id' => $route), $this->container->getRoutes());
     }
 
+    public function testAddContainer() {
+        $this->assertEmpty($this->container->getRoutes());
+
+        $route = new Route('/path', 'callback', 'id');
+        $route2 = new Route('/path2', 'callback2', 'id2');
+
+        $this->container->addRoute($route);
+        $this->container->addRoute($route2);
+
+        $container = new RouteContainer();
+        $container->addContainer($this->container);
+
+        $this->assertEquals(array('id' => $route, 'id2' => $route2), $container->getRoutes());
+    }
+
     public function testGetAndRemoveRouteById() {
         $this->assertEmpty($this->container->getRoutes());
 
