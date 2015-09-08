@@ -41,6 +41,18 @@ class RouteContainer {
     }
 
     /**
+     * Adds all the routes of the provided container to this container
+     * @param RouteContainer $container
+     * @return null
+     */
+    public function addContainer(RouteContainer $container) {
+        $routes = $container->getRoutes();
+        foreach ($routes as $route) {
+            $this->addRoute($route);
+        }
+    }
+
+    /**
      * Removes a route from this container
      * @param string $id The id of the route
      * @return null
