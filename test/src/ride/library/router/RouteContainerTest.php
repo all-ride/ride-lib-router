@@ -15,63 +15,63 @@ class RouteContainerTest extends PHPUnit_Framework_TestCase {
         $this->container = new RouteContainer();
     }
 
-    public function testAddRoute() {
+    public function testSetRoute() {
         $this->assertEmpty($this->container->getRoutes());
 
         $route = new Route('/path', 'callback', 'id');
 
-        $this->container->addRoute($route);
+        $this->container->setRoute($route);
 
         $this->assertEquals(array('id' => $route), $this->container->getRoutes());
     }
 
-    public function testAddContainer() {
+    public function testSetRouteContainer() {
         $this->assertEmpty($this->container->getRoutes());
 
         $route = new Route('/path', 'callback', 'id');
         $route2 = new Route('/path2', 'callback2', 'id2');
 
-        $this->container->addRoute($route);
-        $this->container->addRoute($route2);
+        $this->container->setRoute($route);
+        $this->container->setRoute($route2);
 
         $container = new RouteContainer();
-        $container->addContainer($this->container);
+        $container->setRouteContainer($this->container);
 
         $this->assertEquals(array('id' => $route, 'id2' => $route2), $container->getRoutes());
     }
 
-    public function testGetAndRemoveRouteById() {
+    public function testSetAndUnsetRoute() {
         $this->assertEmpty($this->container->getRoutes());
 
         $route = new Route('/path', 'callback', 'id');
 
-        $this->container->addRoute(new Route('/path', 'callback'));
-        $this->container->addRoute($route);
+        $this->container->setRoute(new Route('/path', 'callback'));
+        $this->container->setRoute($route);
 
         $this->assertEquals(2, count($this->container->getRoutes()));
         $this->assertEquals($route, $this->container->getRouteById('id'));
 
-        $this->container->removeRouteById('id');
+        $this->container->unsetRoute($route);
 
         $this->assertEquals(1, count($this->container->getRoutes()));
         $this->assertNull($this->container->getRouteById('id'));
     }
 
-    public function testGetAndRemoveRouteByPath() {
-        $this->assertEmpty($this->container->getRoutes());
+    public function testSetAndUnsetAlias() {
+        $this->assertEmpty($this->container->getAliases());
 
-        $route = new Route('/to', 'callback', 'id');
+        $alias = new Alias('/path', '/alias');
 
-        $this->container->addRoute(new Route('/path', 'callback'));
-        $this->container->addRoute($route);
+        $this->container->setAlias(new Alias('/path2', '/alias2'));
+        $this->container->setAlias($alias);
 
-        $this->assertEquals(2, count($this->container->getRoutes()));
-        $this->assertEquals($route, $this->container->getRouteByPath('/to'));
+        $this->assertEquals(2, count($this->container->getAliases()));
+        $this->assertEquals($alias, $this->container->getAliasByPath('/path'));
 
-        $this->container->removeRouteByPath('/to');
+        $this->container->unsetAlias($alias);
 
-        $this->assertEquals(1, count($this->container->getRoutes()));
-        $this->assertNull($this->container->getRouteByPath('/to'));
+        $this->assertEquals(1, count($this->container->getAliases()));
+        $this->assertNull($this->container->getAliasByPath('/path'));
     }
 
 }

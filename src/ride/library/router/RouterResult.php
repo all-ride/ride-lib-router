@@ -14,6 +14,12 @@ class RouterResult {
     protected $route;
 
     /**
+     * Matched alias
+     * @var RouteAlias
+     */
+    protected $alias;
+
+    /**
      * Allowed methods for the path
      * @var array
      */
@@ -25,6 +31,7 @@ class RouterResult {
      */
     public function __construct() {
         $this->route = null;
+        $this->alias = null;
         $this->allowedMethods = null;
     }
 
@@ -33,7 +40,7 @@ class RouterResult {
      * @return boolean
      */
     public function isEmpty() {
-        return $this->route === null && $this->allowedMethods === null;
+        return $this->route === null && $this->alias === null && $this->allowedMethods === null;
     }
 
     /**
@@ -51,6 +58,23 @@ class RouterResult {
      */
     public function getRoute() {
         return $this->route;
+    }
+
+    /**
+     * Sets an alias to this result
+     * @param Alias $alias
+     * @return null
+     */
+    public function setAlias(Alias $alias) {
+        $this->alias = $alias;
+    }
+
+    /**
+     * Gets the alias of this result
+     * @return RouteAlias|null
+     */
+    public function getAlias() {
+        return $this->alias;
     }
 
     /**

@@ -64,6 +64,12 @@ class Route {
     protected $locale;
 
     /**
+     * Source of this route
+     * @var string
+     */
+    protected $source;
+
+    /**
      * Constructs a new route
      * @param string $path URL path to the controller
      * @param string|array $callback Callback to the action of this route
@@ -77,10 +83,6 @@ class Route {
         $this->setId($id);
         $this->setAllowedMethods($allowedMethods);
         $this->setIsDynamic(false);
-        $this->setArguments(null);
-        $this->setPredefinedArguments(null);
-        $this->setLocale(null);
-        $this->setBaseUrl(null);
     }
 
     /**
@@ -180,19 +182,12 @@ class Route {
     }
 
     /**
-     * Gets the full URL for this route
-     * @param string $baseUrl Base URL of the system
-     * @param array $arguments Array with the argument name as key and the
-     * argument as value. The argument should be a scalar value which will be
-     * url encoded
-     * @return string Generated URL
+     * Parses the arguments in the path
+     * @param array $arguments
+     * @return string
      */
-    public function getUrl($baseUrl, array $arguments = null) {
-        if ($this->baseUrl) {
-            $baseUrl = $this->baseUrl;
-        }
-
-        $path = $baseUrl;
+    public function parsePath(array $arguments = null) {
+        $path = '';
 
         $tokens = $this->getPathTokens();
         foreach ($tokens as $index => $token) {
@@ -215,6 +210,40 @@ class Route {
         }
 
         return $path;
+    }
+
+    /**
+     * Parses the query for a URL
+     * @param array $queryParameters Array with the query parameters
+     * @param string $querySeparator String used to separate the parameters
+     * @return string
+     */
+    public function parseQuery(array $queryParameters = null, $querySeparator) {
+        if (!$queryParameters) {
+            return '';
+        }
+
+        ksort($queryParameters);
+
+        return '?' . http_build_query($queryParameters, '', $querySeparator);
+    }
+
+    /**
+     * Gets the full URL for this route
+     * @param string $baseUrl Base URL of the system
+     * @param array $arguments Array with the argument name as key and the
+     * argument as value. The argument should be a scalar value which will be
+     * url encoded
+     * @param array $queryParameters Array with the query parameters
+     * @param string $querySeparator String used to separate the parameters
+     * @return string Generated URL
+     */
+    public function getUrl($baseUrl, array $arguments = null, array $queryParameters = null, $querySeparator = '&') {
+        if ($this->baseUrl) {
+            $baseUrl = $this->baseUrl;
+        }
+
+        return $baseUrl . $this->parsePath($arguments) . $this->parseQuery($queryParameters, $querySeparator);
     }
 
     /**
@@ -413,6 +442,23 @@ class Route {
      */
     public function getBaseUrl() {
         return $this->baseUrl;
+    }
+
+    /**
+     * Sets the source for this route
+     * @param string $source Source of this route, for internal use
+     * @return null
+     */
+    public function setSource($source) {
+        $this->source = $source;
+    }
+
+    /**
+     * Gets the source of this route
+     * @return string
+     */
+    public function getSource() {
+        return $this->source;
     }
 
 }
