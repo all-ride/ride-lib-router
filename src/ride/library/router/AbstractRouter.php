@@ -72,6 +72,14 @@ abstract class AbstractRouter implements Router {
      * @return RouterResult
      */
     public function route($method, $path, $baseUrl = null) {
+        $alias = $this->routeContainer->getAliasByPath($path);
+        if ($alias && $alias->isForced()) {
+            $result = new RouterResult();
+            $result->setAlias($alias);
+
+            return $result;
+        }
+
         $path = $this->processPath($path);
 
         $result = $this->getRouteFromPath($method, $path, $baseUrl);

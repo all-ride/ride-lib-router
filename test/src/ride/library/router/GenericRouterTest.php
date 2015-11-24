@@ -25,8 +25,8 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($result->isEmpty());
 
         $route = new Route($path, 'callback');
-        $container->addRoute(new Route('/', 'callback'));
-        $container->addRoute($route);
+        $container->setRoute(new Route('/', 'callback'));
+        $container->setRoute($route);
 
         $result = $router->route($method, $path);
         $this->assertFalse($result->isEmpty());
@@ -52,10 +52,10 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $route2 = new Route($path2, 'callback');
         $route3 = new Route($path3, 'callback');
         $route4 = new Route($path4, 'callback');
-        $container->addRoute($route1);
-        $container->addRoute($route4);
-        $container->addRoute($route2);
-        $container->addRoute($route3);
+        $container->setRoute($route1);
+        $container->setRoute($route4);
+        $container->setRoute($route2);
+        $container->setRoute($route3);
 
         // test route 1
         $result = $router->route($method, '/');
@@ -115,7 +115,7 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
 
         $route = new Route($path, 'callback');
         $route->setIsDynamic(true);
-        $container->addRoute($route);
+        $container->setRoute($route);
 
         $result = $router->route($method, $path);
         $this->assertFalse($result->isEmpty());
@@ -130,7 +130,7 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
 
         $route = new Route($path2, 'callback');
         $route->setIsDynamic(true);
-        $container->addRoute($route);
+        $container->setRoute($route);
 
         $result = $router->route($method, $path2);
         $this->assertFalse($result->isEmpty());
@@ -145,7 +145,7 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
 
         $route = new Route($path3, 'callback');
         $route->setIsDynamic(true);
-        $container->addRoute($route);
+        $container->setRoute($route);
 
         $result = $router->route($method, $path . '/value1/to/value2');
         $this->assertFalse($result->isEmpty());
@@ -165,8 +165,8 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
 
         $route1 = new Route($path, 'callback', null, $method1);
         $route2 = new Route($path, 'callback', null, $method2);
-        $container->addRoute($route1);
-        $container->addRoute($route2);
+        $container->setRoute($route1);
+        $container->setRoute($route2);
 
         $result = $router->route('PUT', $path);
         $this->assertFalse($result->isEmpty());
@@ -192,8 +192,8 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $route1->setBaseUrl($url1);
         $route2 = new Route($path, 'callback');
         $route2->setBaseUrl($url2);
-        $container->addRoute($route1);
-        $container->addRoute($route2);
+        $container->setRoute($route1);
+        $container->setRoute($route2);
 
         $result = $router->route($method, $path, $url1);
         $this->assertFalse($result->isEmpty());
@@ -207,7 +207,7 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($result->isEmpty());
 
         $route3 = new Route($path, 'callback');
-        $container->addRoute($route3);
+        $container->setRoute($route3);
 
         $result = $router->route($method, $path, $url3);
         $this->assertFalse($result->isEmpty());

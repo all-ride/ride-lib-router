@@ -17,6 +17,11 @@ class GenericRouter extends AbstractRouter {
      * @return RouterResult
      */
     protected function getRouteFromPath($method, $path, $baseUrl = null) {
+        $alias = $this->routeContainer->getAliasByAlias($path);
+        if ($alias) {
+            $path = $alias->getPath();
+        }
+
         $path = new Route($path, 'callback');
         $pathTokens = $path->getPathTokens();
 
