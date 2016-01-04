@@ -225,7 +225,34 @@ class Route {
 
         ksort($queryParameters);
 
-        return '?' . http_build_query($queryParameters, '', $querySeparator);
+        return '?' . $this->parseQueryArray($queryParameters, $querySeparator);
+    }
+
+    /**
+     * Parses a query parameter array value
+     * @param array $queryParameters Array value
+     * @param string $querySeparator String used to separate the parameters
+     * @param string $prefix Prefix for the names of the parameters
+     * @return string
+     */
+    protected function parseQueryArray(array $queryParameters, $querySeparator, $prefix = null) {
+        $result = array();
+
+        foreach ($queryParameters as $name => $value) {
+            if ($prefix) {
+                $key = $prefix . '[' . $name . ']';
+            } else {
+                $key = $name;
+            }
+
+            if (is_array($value)) {
+                $result[] = $this->parseQueryArray($value, $querySeparator, $key);
+            } else {
+                $result[] = $key . '=' . urlencode($value);
+            }
+        }
+
+        return implode($querySeparator, $result);
     }
 
     /**
