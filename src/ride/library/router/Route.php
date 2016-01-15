@@ -172,11 +172,8 @@ class Route {
             return array();
         }
 
-        $path = $this->path;
-
-        if (substr($path, 0, 1) == '/') {
-            $path = substr($path, 1);
-        }
+        // trim first /
+        $path = substr($this->path, 1);
 
         return explode('/', $path);
     }
