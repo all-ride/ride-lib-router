@@ -35,14 +35,17 @@ class GenericRouter extends AbstractRouter {
 
             $routeArguments = $this->matchTokens($pathTokens, $routeTokens, $route->isDynamic());
             if ($routeArguments === false) {
+                // no match
                 continue;
             }
 
             if ($resultRoute && count($resultArguments) < count($routeArguments)) {
+                // less arguments of the current result, more static routes have priority
                 continue;
             }
 
             if ($resultRoute && !$route->isMethodAllowed($method)) {
+                // method is not allowed
                 $allowedMethods = array_merge($allowedMethods, $route->getAllowedMethods());
 
                 continue;
@@ -50,6 +53,12 @@ class GenericRouter extends AbstractRouter {
 
             $routeBaseUrl = $route->getBaseUrl();
             if ($baseUrl && $routeBaseUrl && $routeBaseUrl != $baseUrl) {
+                // base URL defined but not the incoming base URL
+                continue;
+            }
+
+            if ($resultRoute && $resultRoute->getPath() == $route->getPath() && $resultRoute->getBaseUrl() == $routeBaseUrl) {
+                // already matched a route with this path and baseUrl
                 continue;
             }
 
