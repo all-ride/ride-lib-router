@@ -248,12 +248,18 @@ class RouteContainer {
             throw new RouterException('Could not get the URL for route ' . $id . ': no route found for the provided id');
         }
 
-        if ($route->getBaseUrl()) {
-            $baseUrl = $route->getBaseUrl();
-        }
+        return $route->getUrl($baseUrl, $arguments, $queryParameters);
+    }
 
-        $path = $route->parsePath($arguments);
-        $path .= $route->parseQuery($queryParameters, $querySeparator);
+    /**
+     * Gets the alias for the provided URL
+     * @param Url $url Instance of the URL
+     * @return string
+     */
+    public function getUrlAlias(Url $url) {
+        $baseUrl = $url->getBaseUrl();
+
+        $path = str_replace($baseUrl, '', $url);
 
         if (isset($this->aliases['path'][$path]) && $this->aliases['path'][$path]->isForced()) {
             $path = $this->aliases['path'][$path]->getAlias();

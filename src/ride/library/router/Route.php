@@ -179,95 +179,20 @@ class Route {
     }
 
     /**
-     * Parses the arguments in the path
-     * @param array $arguments
-     * @return string
-     */
-    public function parsePath(array $arguments = null) {
-        $path = '';
-
-        $tokens = $this->getPathTokens();
-        foreach ($tokens as $index => $token) {
-            $argumentName = substr($token, 1, -1);
-            $isArgument = $token == '%' . $argumentName . '%';
-
-            if ($isArgument) {
-                if (isset($arguments[$argumentName])) {
-                    if (!is_scalar($arguments[$argumentName])) {
-                        throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $argumentName . ' is not a scalar value');
-                    }
-
-                    $path .= '/' . urlencode($arguments[$argumentName]);
-                } else {
-                    throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $argumentName . ' is not set');
-                }
-            } else {
-                $path .= '/' . $token;
-            }
-        }
-
-        return $path;
-    }
-
-    /**
-     * Parses the query for a URL
-     * @param array $queryParameters Array with the query parameters
-     * @param string $querySeparator String used to separate the parameters
-     * @return string
-     */
-    public function parseQuery(array $queryParameters = null, $querySeparator) {
-        if (!$queryParameters) {
-            return '';
-        }
-
-        ksort($queryParameters);
-
-        return '?' . $this->parseQueryArray($queryParameters, $querySeparator);
-    }
-
-    /**
-     * Parses a query parameter array value
-     * @param array $queryParameters Array value
-     * @param string $querySeparator String used to separate the parameters
-     * @param string $prefix Prefix for the names of the parameters
-     * @return string
-     */
-    protected function parseQueryArray(array $queryParameters, $querySeparator, $prefix = null) {
-        $result = array();
-
-        foreach ($queryParameters as $name => $value) {
-            if ($prefix) {
-                $key = $prefix . '[' . $name . ']';
-            } else {
-                $key = $name;
-            }
-
-            if (is_array($value)) {
-                $result[] = $this->parseQueryArray($value, $querySeparator, $key);
-            } else {
-                $result[] = $key . '=' . urlencode($value);
-            }
-        }
-
-        return implode($querySeparator, $result);
-    }
-
-    /**
      * Gets the full URL for this route
      * @param string $baseUrl Base URL of the system
      * @param array $arguments Array with the argument name as key and the
      * argument as value. The argument should be a scalar value which will be
      * url encoded
      * @param array $queryParameters Array with the query parameters
-     * @param string $querySeparator String used to separate the parameters
-     * @return string Generated URL
+     * @return Url Instance of the URL
      */
-    public function getUrl($baseUrl, array $arguments = null, array $queryParameters = null, $querySeparator = '&') {
+    public function getUrl($baseUrl, array $arguments = null, array $queryParameters = null) {
         if ($this->baseUrl) {
             $baseUrl = $this->baseUrl;
         }
 
-        return $baseUrl . $this->parsePath($arguments) . $this->parseQuery($queryParameters, $querySeparator);
+        return new Url($baseUrl, $this->path, $arguments, $queryParameters);
     }
 
     /**
