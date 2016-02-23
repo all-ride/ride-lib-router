@@ -2,6 +2,8 @@
 
 namespace ride\library\router;
 
+use ride\library\router\exception\RouterException;
+
 /**
  * Modifiable URL
  */
@@ -11,17 +13,15 @@ class Url {
      * Constructs a new URL
      * @param string $baseUrl
      * @param string $path
-     * @param array $pathParameters
+     * @param array $arguments
      * @param array $queryParameters
      * @return null
      */
-    public function __construct($baseUrl, $path = '/', array $pathParameters = null, array $queryParameters = null) {
+    public function __construct($baseUrl, $path = null, array $arguments = null, array $queryParameters = null) {
         $this->setBaseUrl($baseUrl);
         $this->setPath($path);
-        $this->baseUrl = $baseUrl;
-        $this->path = $path;
-        $this->pathParameters = $pathParameters;
-        $this->queryParameters = $queryParameters;
+        $this->setArguments($arguments);
+        $this->setQueryParameters($queryParameters);
     }
 
     /**
@@ -67,32 +67,71 @@ class Url {
     }
 
     /**
+     * Sets path parameters
+     * @param array $parameters Array with key-value pairs to set as path
+     * parameters
+     * @return null
+     */
+    protected function setArguments(array $arguments = null) {
+        if ($arguments === null) {
+            $this->arguments = array();
+
+            return;
+        }
+
+        foreach ($arguments as $name => $value) {
+            $this->setArgument($name, $value);
+        }
+    }
+
+    /**
      * Sets a path parameter
      * @param string $name Name of the parameter
      * @param string $value Value of the parameter
      * @return null
-    public function setPathParameter($name, $value) {
-        $this->pathParameters[$name] = $value;
+     */
+    public function setArgument($name, $value) {
+        $this->arguments[$name] = $value;
     }
 
     /**
      * Gets a path parameter
      * @param string $name Name of the parameter
      * @return mixed
-    public function getPathParameter($name) {
-        if (!isset($this->pathParameters[$name])) {
+     */
+    public function getArgument($name) {
+        if (!isset($this->arguments[$name])) {
             return null;
         }
 
-        return $this->pathParameters[$name];
+        return $this->arguments[$name];
     }
 
     /**
      * Gets the path parameters
      * @return array|null
      */
-    public function getPathParameters() {
-        return $this->pathParameters;
+    public function getArguments() {
+        return $this->arguments;
+    }
+
+
+    /**
+     * Sets query parameters
+     * @param array $queryParameters Array with key-value pairs to set as query
+     * parameters
+     * @return null
+     */
+    protected function setQueryParameters(array $queryParameters = null) {
+        if ($queryParameters === null) {
+            $this->queryParameters = array();
+
+            return;
+        }
+
+        foreach ($queryParameters as $name => $value) {
+            $this->setQueryParameter($name, $value);
+        }
     }
 
     /**
@@ -141,20 +180,14 @@ class Url {
         $tokens = $this->getPathTokens();
         foreach ($tokens as $index => $token) {
             $name = substr($token, 1, -1);
-            if ($token != '%' . $name . '%') {
+            if ($token != '%' . $name . '%' || !isset($this->arguments[$name])) {
                 $path .= '/' . $token;
-
-                continue;
-            }
-
-            if (isset($this->pathParameters[$name])) {
-                if (!is_scalar($this->pathParameters[$name])) {
+            } else {
+                if (!is_scalar($this->arguments[$name])) {
                     throw new RouterException('Could not parse path ' . $this->path . ': argument ' . $name . ' is not a scalar value');
                 }
 
-                $path .= '/' . urlencode($this->pathParameters[$name]);
-            } else {
-                throw new RouterException('Could not parse path ' . $this->path . ': argument ' . $name . ' is not set');
+                $path .= '/' . urlencode($this->arguments[$name]);
             }
         }
 
@@ -190,7 +223,7 @@ class Url {
 
         ksort($this->queryParameters);
 
-        return '?' . $this->parseQueryArray($queryParameters, $querySeparator);
+        return '?' . $this->parseQueryArray($this->queryParameters, $querySeparator);
     }
 
     /**

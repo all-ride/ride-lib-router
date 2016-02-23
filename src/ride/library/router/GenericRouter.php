@@ -57,8 +57,8 @@ class GenericRouter extends AbstractRouter {
                 continue;
             }
 
-            if ($resultRoute && $resultRoute->getPath() == $route->getPath() && $resultRoute->getBaseUrl() == $routeBaseUrl) {
-                // already matched a route with this path and baseUrl
+            if ($resultRoute && $resultRoute->getPath() == $route->getPath() && $resultRoute->getBaseUrl() == $routeBaseUrl && $resultRoute->isMethodAllowed($method)) {
+                // already matched a route with this method, path and baseUrl
                 continue;
             }
 
