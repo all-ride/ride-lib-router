@@ -10,6 +10,30 @@ use ride\library\router\exception\RouterException;
 class Url {
 
     /**
+     * Base URL of the system
+     * @var string
+     */
+    private $baseUrl;
+
+    /**
+     * Path for the system
+     * @var string
+     */
+    private $path;
+
+    /**
+     * Array with the arguments for the path
+     * @var array
+     */
+    private $arguments;
+
+    /**
+     * Array with the query parameters
+     * @array
+     */
+    private $queryParameters;
+
+    /**
      * Constructs a new URL
      * @param string $baseUrl
      * @param string $path
