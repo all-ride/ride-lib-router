@@ -87,7 +87,7 @@ class Url {
      * @return string
      */
     public function getPath() {
-        return $path;
+        return $this->path;
     }
 
     /**
