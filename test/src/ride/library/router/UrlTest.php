@@ -23,6 +23,23 @@ class UrlTest extends PHPUnit_Framework_TestCase {
             array('http://example.com/data/1/edit', 'http://example.com', '/data/%id%/%action%', array('id' => 1, 'action' => 'edit'), null),
             array('http://example.com/data/1/edit?format=json', 'http://example.com', '/data/%id%/%action%', array('id' => 1, 'action' => 'edit'), array('format' => 'json')),
             array('http://example.com/data?filter[type]=general&filter[published]=1', 'http://example.com', '/data', null, array('filter' => array('type' => 'general', 'published' => 1))),
+            array('http://example.com/data/%id%/%action%', 'http://example.com', '/data/%id%/%action%', array('id' => 1), null),
+        );
+    }
+
+    /**
+     * @dataProvider providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided
+     * @expectedException ride\library\router\exception\RouterException
+     */
+    public function testGetUrlThrowsExceptionWhenInvalidArgumentsProvided($arguments) {
+        $url = new Url('http://localhost', '/path/%var1%/to/%var2%', $arguments);
+        $url->getUrl();
+    }
+
+    public function providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided() {
+        return array(
+            array(array('var1' => 'var1')), // expected argument not set
+            array(array('var1' => $this, 'var2' => 'var2')), // invalid value
         );
     }
 
@@ -31,7 +48,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals('http://localhost/data/%id%', (string) $url);
 
-        $url->setPathParameter('id', 3);
+        $url->setArgument('id', 3);
 
         $this->assertEquals('http://localhost/data/3', (string) $url);
 

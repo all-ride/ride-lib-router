@@ -240,7 +240,7 @@ class RouteContainer {
      * url encoded
      * @param array $queryParameters Array with the query parameter name as key
      * and the parameter as value.
-     * @return string Generated URL
+     * @return Url Instance of the URL
      */
     public function getUrl($baseUrl, $id, array $arguments = null, array $queryParameters = null, $querySeparator = '&') {
         $route = $this->getRouteById($id);
@@ -259,7 +259,7 @@ class RouteContainer {
     public function getUrlAlias(Url $url) {
         $baseUrl = $url->getBaseUrl();
 
-        $path = str_replace($baseUrl, '', $url);
+        $path = str_replace($baseUrl, '', $url->getUrl());
 
         if (isset($this->aliases['path'][$path]) && $this->aliases['path'][$path]->isForced()) {
             $path = $this->aliases['path'][$path]->getAlias();

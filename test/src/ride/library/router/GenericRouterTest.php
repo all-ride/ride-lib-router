@@ -214,6 +214,32 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($route3, $result->getRoute());
     }
 
+    public function testAlias() {
+        $container = new RouteContainer();
+        $router = new GenericRouter($container);
+
+        $path = '/path/to/%action%';
+
+        $route = new Route($path, 'callback');
+        $container->setRoute(new Route('/', 'callback'));
+        $container->setRoute($route);
+
+        $alias = new Alias('/path/to/contact', '/ptc');
+        $container->setAlias($alias);
+
+        $result = $router->route('GET', '/ptc');
+        $this->assertFalse($result->isEmpty());
+        $this->assertEquals($route->getId(), $result->getRoute()->getId());
+        $this->assertEquals(array('action' => 'contact'), $result->getRoute()->getArguments());
+
+        $alias->setIsForced(true);
+
+        $result = $router->route('GET', '/path/to/contact');
+        $this->assertFalse($result->isEmpty());
+        $this->assertNull($result->getRoute());
+        $this->assertEquals($alias, $result->getAlias());
+    }
+
     public function testDefaultCallback() {
         $callback = 'function';
         $method = 'GET';
@@ -228,7 +254,6 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $result = $router->route($method, '/');
         $this->assertFalse($result->isEmpty());
         $this->assertEquals($callback, $result->getRoute()->getCallback());
-
     }
 
 }

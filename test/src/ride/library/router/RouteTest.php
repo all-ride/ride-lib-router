@@ -134,23 +134,6 @@ class RouteTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($baseUrl2 . '/path/1/to/test/A+encode+test', $url);
     }
 
-    /**
-     * @dataProvider providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided
-     * @expectedException ride\library\router\exception\RouterException
-     */
-    public function testGetUrlThrowsExceptionWhenInvalidArgumentsProvided($arguments) {
-        $route = new Route('/path/%var1%/to/%var2%', 'callback');
-
-        $route->getUrl('http://localhost', $arguments);
-    }
-
-    public function providerGetUrlThrowsExceptionWhenInvalidArgumentsProvided() {
-        return array(
-            array(array()), // expected argument not set
-            array(array('var1' => $this)), // invalid value
-        );
-    }
-
     public function testToString() {
         $route = new Route('/path', 'callback');
 
