@@ -53,6 +53,10 @@ This object has 3 possible states:
 * __alias is set__: a forced alias is matched and the request should be redirected
 * __route is set__: a route matched and the callback should be invoked
 
+## Url
+
+An Url is a mutable object to update and manipulate a generated URL.
+
 ## Code Sample
 
 Check this code sample to see the possibilities of this library:
@@ -152,17 +156,22 @@ $result->isEmpty(); // false
 
 // create some urls
 
+// http://some-server.com/path
+$url = $routeContainer->getUrl('http://my-server.com', 'id2');
+ 
+// http://my-server.com/ptc
+$url = $routeContainer->getUrl('http://my-server.com', 'id', array('action' => 'content'));
+ 
 // http://my-server.com/path/to/my-action
 $routeContainer->getUrl('http://my-server.com', 'id', array('action' => 'my-action'));
  
 // http://my-server.com/path/to/my-action?limit=20&page=1
 $url = $routeContainer->getUrl('http://my-server.com', 'id', array('action' => 'my-action'), array('page' => 1, 'limit' => 20));
  
-// http://my-server.com/path/to/my-action?limit=20&amp;page=1
+// http://my-server.com/path/to/your-action?limit=20&amp;page=2
 $url = $routeContainer->getUrl('http://my-server.com', 'id', array('action' => 'my-action'), array('page' => 1, 'limit' => 20), '&amp;');
+$url->setArgument('action', 'your-action');
+$url->setQueryParameter('page', 2);
  
-// http://my-server.com/ptc
-$url = $routeContainer->getUrl('http://my-server.com', 'id', array('action' => 'content')); 
-
-// http://some-server.com/path
-$url = $routeContainer->getUrl('http://my-server.com', 'id2'); 
+// translates an URL to it's alias if available and needed
+$url = $routeContainer->getUrlAlias($url);

@@ -2,7 +2,6 @@
     "name": "ride/lib-router",
     "description": "Router library of the Ride framework",
     "license": "MIT",
-    "version": "0.3.2",
     "authors": [
         {
             "name": "Joris Vandeweerd",

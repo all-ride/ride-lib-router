@@ -53,6 +53,18 @@ class Url {
      * @return string
      */
     public function __toString() {
+        try {
+            return $this->getUrl();
+        } catch (RouterException $exception) {
+            return $this->baseUrl . $this->path;
+        }
+    }
+
+    /**
+     * Gets the URL of this instance
+     * @return string
+     */
+    public function getUrl() {
         return $this->baseUrl . $this->parsePath() . $this->parseQuery();
     }
 
@@ -139,7 +151,6 @@ class Url {
         return $this->arguments;
     }
 
-
     /**
      * Sets query parameters
      * @param array $queryParameters Array with key-value pairs to set as query
@@ -204,8 +215,10 @@ class Url {
         $tokens = $this->getPathTokens();
         foreach ($tokens as $index => $token) {
             $name = substr($token, 1, -1);
-            if ($token != '%' . $name . '%' || !isset($this->arguments[$name])) {
+            if ($token != '%' . $name . '%') {
                 $path .= '/' . $token;
+            } elseif (!isset($this->arguments[$name])) {
+                throw new RouterException('Could not get the URL of route ' . $this->path . ': argument ' . $name . ' is not set');
             } else {
                 if (!is_scalar($this->arguments[$name])) {
                     throw new RouterException('Could not parse path ' . $this->path . ': argument ' . $name . ' is not a scalar value');
