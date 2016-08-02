@@ -135,9 +135,9 @@ class Url {
      * @param string $name Name of the parameter
      * @return mixed
      */
-    public function getArgument($name) {
+    public function getArgument($name, $default = null) {
         if (!isset($this->arguments[$name])) {
-            return null;
+            return $default;
         }
 
         return $this->arguments[$name];
@@ -188,9 +188,9 @@ class Url {
      * @param string $name Name of the parameter
      * @return mixed Value of the parameter or null if not set
      */
-    public function getQueryParameter($name) {
+    public function getQueryParameter($name, $default = null) {
         if (!isset($this->queryParameters[$name])) {
-            return null;
+            return $default;
         }
 
         return $this->queryParameters[$name];
