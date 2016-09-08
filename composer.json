@@ -10,7 +10,12 @@
     ],
     "autoload": {
         "psr-0": {
-            "ride\\library\\router\\": ["src/", "test/src/"]
+            "ride\\library\\router\\": ["src/"]
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "ride\\library\\router\\": ["test/src/"]
         }
     }
 }

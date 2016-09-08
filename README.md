@@ -4,9 +4,11 @@ Router library of the PHP Ride framework.
 
 Routing is used to translate a incoming HTTP request to a callback.
 
-## Route
+## What's In This Library
 
-A route defines a request path with the callback. 
+### Route
+
+A _Route_ defines a request path with the callback. 
 
 The definition of a route provides 2 ways for passing arguments to the action:
  
@@ -24,27 +26,27 @@ You can set a base URL to a route to limit your action to a certain domain.
 A locale can also be set to a route. 
 This is usable to act on localized paths later on the process.
 
-## Alias
+### Alias
 
-An alias defines an aliased path for existing paths with query parameters.
+An _Alias_ defines an aliased path for existing paths with query parameters.
 
 It can be forced in order to redirect the original path to the alias.
 
-## RouteContainer
+### RouteContainer
 
-A route container is the collection of your routes. 
+A _RouteContainer_ is the collection of your routes. 
 It offers an easy interface to manage the routes and aliases.
 
 Use the route container to generate an URL in order for the aliases to be handled.
 
-## Router
+### Router
 
-The router is what performes the actual translating of the incoming request to the route.
+The _Router_ is what performes the actual translating of the incoming request to the route.
 It's a simple interface but a generic implementation is added to the library.
 
-## RouterResult 
+### RouterResult 
 
-The result of a route action on the router is a router result object.
+The result of a route action on the router is a _RouterResult_ object.
 
 This object has 3 possible states:
 
@@ -53,9 +55,9 @@ This object has 3 possible states:
 * __alias is set__: a forced alias is matched and the request should be redirected
 * __route is set__: a route matched and the callback should be invoked
 
-## Url
+### Url
 
-An Url is a mutable object to update and manipulate a generated URL.
+An _Url_ is a mutable object to update and manipulate a generated URL.
 
 ## Code Sample
 
@@ -175,3 +177,17 @@ $url->setQueryParameter('page', 2);
  
 // translates an URL to it's alias if available and needed
 $url = $routeContainer->getUrlAlias($url);
+```
+
+### Implementations
+
+For more examples, you can check the following implementation of this library:
+- [ride/web](https://github.com/all-ride/ride-web)
+
+## Installation
+
+You can use [Composer](http://getcomposer.org) to install this library.
+
+```
+composer require ride/lib-router
+```
