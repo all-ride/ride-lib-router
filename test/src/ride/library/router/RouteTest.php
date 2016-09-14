@@ -153,6 +153,31 @@ class RouteTest extends PHPUnit_Framework_TestCase {
         $route->setIsDynamic(true);
 
         $this->assertEquals('/path Class::method() d[GET|POST]', (string) $route);
-
     }
+
+    public function testPermissions() {
+        $route = new Route('/path', 'callback');
+
+        $this->assertNull($route->getPermissions());
+
+        $permission = 'permission';
+
+        $route->setPermissions($permission);
+
+        $this->assertEquals($route->getPermissions(), array($permission));
+
+        $permissions = array(
+            'permission1',
+            'permission2',
+        );
+
+        $route->setPermissions($permissions);
+
+        $this->assertEquals($route->getPermissions(), $permissions);
+
+        $route->setPermissions(null);
+
+        $this->assertNull($route->getPermissions());
+    }
+
 }

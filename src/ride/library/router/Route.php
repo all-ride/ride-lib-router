@@ -64,6 +64,12 @@ class Route {
     protected $locale;
 
     /**
+     * Permissions needed to access this route
+     * @var array
+     */
+    protected $permissions;
+
+    /**
      * Source of this route
      * @var string
      */
@@ -359,6 +365,52 @@ class Route {
     }
 
     /**
+     * Sets the base URL for this route
+     * @param string|null $baseUrl URL pointing to the system
+     * @return null
+     */
+    public function setBaseUrl($baseUrl = null) {
+        $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * Gets the base URL of this route
+     * @return string
+     */
+    public function getBaseUrl() {
+        return $this->baseUrl;
+    }
+
+    /**
+     * Sets the permissions for this route
+     * @param string|array $permissions Code of a permission or permissions
+     * @return null
+     */
+    public function setPermissions($permissions = null) {
+        if ($permissions !== null) {
+            if (!is_array($permissions)) {
+                $permissions = array($permissions);
+            }
+
+            foreach ($permissions as $permission) {
+                if (!is_string($permission)) {
+                    throw new RouterException('Could not set the permissions of this route: permission code should be an array');
+                }
+            }
+        }
+
+        $this->permissions = $permissions;
+    }
+
+    /**
+     * Gets the permissions of this route
+     * @return array Array with permission codes
+     */
+    public function getPermissions() {
+        return $this->permissions;
+    }
+
+    /**
      * Sets the locale for this route
      * @param string|null $locale Locale code of the current locale, null for
      * automatic selection
@@ -374,23 +426,6 @@ class Route {
      */
     public function getLocale() {
         return $this->locale;
-    }
-
-    /**
-     * Sets the base URL for this route
-     * @param string|null $baseUrl URL pointing to the system
-     * @return null
-     */
-    public function setBaseUrl($baseUrl = null) {
-        $this->baseUrl = $baseUrl;
-    }
-
-    /**
-     * Gets the base URL of this route
-     * @return string
-     */
-    public function getBaseUrl() {
-        return $this->baseUrl;
     }
 
     /**

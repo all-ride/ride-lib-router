@@ -26,6 +26,9 @@ You can set a base URL to a route to limit your action to a certain domain.
 A locale can also be set to a route. 
 This is usable to act on localized paths later on the process.
 
+You can help your security layer by adding permissions to your route.
+The router itself will not take these into account.
+
 ### Alias
 
 An _Alias_ defines an aliased path for existing paths with query parameters.
