@@ -125,6 +125,10 @@ class RouteContainer {
         return $this->routes;
     }
 
+    public function addRoute(Route $route) {
+        $this->setRoute($route);
+    }
+
     /**
      * Sets a route to this container
      * @param Route $route Route to add
@@ -240,7 +244,7 @@ class RouteContainer {
      * url encoded
      * @param array $queryParameters Array with the query parameter name as key
      * and the parameter as value.
-     * @return string Generated URL
+     * @return Url Instance of the URL
      */
     public function getUrl($baseUrl, $id, array $arguments = null, array $queryParameters = null, $querySeparator = '&') {
         $route = $this->getRouteById($id);
@@ -248,12 +252,18 @@ class RouteContainer {
             throw new RouterException('Could not get the URL for route ' . $id . ': no route found for the provided id');
         }
 
-        if ($route->getBaseUrl()) {
-            $baseUrl = $route->getBaseUrl();
-        }
+        return $route->getUrl($baseUrl, $arguments, $queryParameters);
+    }
 
-        $path = $route->parsePath($arguments);
-        $path .= $route->parseQuery($queryParameters, $querySeparator);
+    /**
+     * Gets the alias for the provided URL
+     * @param Url $url Instance of the URL
+     * @return string
+     */
+    public function getUrlAlias(Url $url) {
+        $baseUrl = $url->getBaseUrl();
+
+        $path = str_replace($baseUrl, '', $url->getUrl());
 
         if (isset($this->aliases['path'][$path]) && $this->aliases['path'][$path]->isForced()) {
             $path = $this->aliases['path'][$path]->getAlias();
