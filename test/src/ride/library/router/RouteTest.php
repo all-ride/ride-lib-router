@@ -6,13 +6,15 @@ use \PHPUnit_Framework_TestCase;
 
 class RouteTest extends PHPUnit_Framework_TestCase {
 
-    public function testConstruct() {
-        $path = 'path';
+    /**
+     * @dataProvider providerConstruct
+     */
+    public function testConstruct($expectedPath, $path) {
         $callback = 'callback';
 
         $route = new Route($path, $callback);
 
-        $this->assertEquals('/' . $path, $route->getPath());
+        $this->assertEquals($route->getPath(), $expectedPath);
         $this->assertEquals($callback, $route->getCallback());
         $this->assertNull($route->getId());
         $this->assertNull($route->getAllowedMethods());
@@ -29,6 +31,13 @@ class RouteTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($id, $route->getId());
         $this->assertEquals(array($allowedMethod => true), $route->getAllowedMethods());
+    }
+
+    public function providerConstruct() {
+        return array(
+            array('/path', 'path'),
+            array('///admin', '///admin'),
+        );
     }
 
     /**
