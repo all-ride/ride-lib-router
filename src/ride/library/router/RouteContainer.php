@@ -125,6 +125,9 @@ class RouteContainer {
         return $this->routes;
     }
 
+    /**
+     * @deprecated
+     */
     public function addRoute(Route $route) {
         $this->setRoute($route);
     }
