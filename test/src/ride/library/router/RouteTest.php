@@ -37,6 +37,7 @@ class RouteTest extends PHPUnit_Framework_TestCase {
         return array(
             array('/path', 'path'),
             array('///admin', '///admin'),
+            array('/', '/'),
         );
     }
 
