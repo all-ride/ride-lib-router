@@ -118,10 +118,15 @@ abstract class AbstractRouter implements Router {
             $path = substr($path, 0, $positionQuestion);
         }
 
-        // remove trailing slash
         if ($path != '/') {
+            // remove trailing slash
             if (substr($path, -1, 1) != '/') {
                 $path = rtrim($path, '/');
+            }
+
+            // enforce root slash
+            if (substr($path, 0, 1) != '/') {
+                $path = '/' . $path;
             }
         }
 
