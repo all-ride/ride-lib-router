@@ -24,18 +24,28 @@ class GenericRouterTest extends PHPUnit_Framework_TestCase {
         $result = $router->route($method, $path);
         $this->assertTrue($result->isEmpty());
 
-        $route = new Route($path, 'callback');
-        $container->setRoute(new Route('/', 'callback'));
-        $container->setRoute($route);
+        $result = $router->route($method, '?only_query');
+        $this->assertTrue($result->isEmpty());
+
+        $rootRoute = new Route('/', 'callback');
+        $pathRoute = new Route($path, 'callback');
+
+        $container->setRoute($rootRoute);
+        $container->setRoute($pathRoute);
 
         $result = $router->route($method, $path);
         $this->assertFalse($result->isEmpty());
-        $this->assertEquals($route, $result->getRoute());
+        $this->assertEquals($pathRoute, $result->getRoute());
         $this->assertNull($result->getAllowedMethods());
 
         $result = $router->route($method, $path . '?foo=bar');
         $this->assertFalse($result->isEmpty());
-        $this->assertEquals($route, $result->getRoute());
+        $this->assertEquals($pathRoute, $result->getRoute());
+        $this->assertNull($result->getAllowedMethods());
+
+        $result = $router->route($method, '?only_query');
+        $this->assertFalse($result->isEmpty());
+        $this->assertEquals($rootRoute, $result->getRoute());
         $this->assertNull($result->getAllowedMethods());
     }
 
