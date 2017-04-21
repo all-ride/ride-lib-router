@@ -96,9 +96,15 @@ class Url {
 
     /**
      * Gets the path of this URL
+     * @param boolean $parse Set to true to replace the variables with their
+     * values
      * @return string
      */
-    public function getPath() {
+    public function getPath($parse = false) {
+        if ($parse) {
+            return $this->parsePath();
+        }
+
         return $this->path;
     }
 

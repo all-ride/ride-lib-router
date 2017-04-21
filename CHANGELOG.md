@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 - 2017-04-21
+### 
+- added $parse argument to getPath in Url class to replace the variables with their values
+
 ## 1.3.3 - 2017-02-08
 ### Updated
 - Enforce route slash
