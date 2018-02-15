@@ -150,6 +150,12 @@ class Route {
             throw new RouterException('Could not set the path of the route : path is empty or not a string.');
         }
 
+        // if an anchor comes through, ignore everything behind it
+        $positionAnchor = strpos($path, '#');
+        if ($positionAnchor !== false) {
+            $path = substr($path, 0, $positionAnchor);
+        }
+
         $regexHttpSegment = '(([a-zA-Z0-9]|[$+_.-]|%|[!*\'(),])|(%[0-9A-Fa-f][0-9A-Fa-f])|[;:@&=])*';
         $regexHttpPath = '/^' . $regexHttpSegment . '(\\/' . $regexHttpSegment . ')*$/';
 
