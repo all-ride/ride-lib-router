@@ -1,7 +1,11 @@
 # Changelog
 
+## 1.4.1 - 2018-02-15
+### Updated
+- if an anchor comes through, ignore everything behind it
+
 ## 1.4.0 - 2017-04-21
-### 
+### Added
 - added $parse argument to getPath in Url class to replace the variables with their values
 
 ## 1.3.3 - 2017-02-08
