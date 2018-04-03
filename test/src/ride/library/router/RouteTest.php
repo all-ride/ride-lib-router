@@ -2,9 +2,9 @@
 
 namespace ride\library\router;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends PHPUnit_Framework_TestCase {
+class RouteTest extends TestCase {
 
     /**
      * @dataProvider providerConstruct
@@ -189,6 +189,33 @@ class RouteTest extends PHPUnit_Framework_TestCase {
         $route->setPermissions(null);
 
         $this->assertNull($route->getPermissions());
+    }
+
+    public function testGetArgument() {
+        $route = new Route('/path', 'callback');
+        $route->setArguments(array('arg_name' => 'arg_value'));
+
+        $this->assertSame('arg_value', $route->getArgument('arg_name'));
+    }
+
+    public function testGetArgumentShouldReturnNull() {
+        $route = new Route('/path', 'callback');
+
+        $this->assertNull($route->getArgument('arg_name'));
+    }
+
+    public function testSetLocale() {
+        $route = new Route('/path', 'callback');
+        $route->setLocale('en');
+
+        $this->assertSame('en', $route->getLocale());
+    }
+
+    public function testSetSource() {
+        $route = new Route('/path', 'callback');
+        $route->setSource('source_string');
+
+        $this->assertSame('source_string', $route->getSource());
     }
 
 }
