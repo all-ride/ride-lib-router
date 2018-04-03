@@ -2,9 +2,9 @@
 
 namespace ride\library\router;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UrlTest extends PHPUnit_Framework_TestCase {
+class UrlTest extends TestCase {
 
     /**
      * @dataProvider providerToString
@@ -59,6 +59,65 @@ class UrlTest extends PHPUnit_Framework_TestCase {
         $url->setQueryParameter('query', null);
 
         $this->assertEquals('http://localhost/data/3', (string) $url);
+    }
+
+    public function testGetBaseUrl() {
+        $url = new Url('http://localhost', '/data/%id%/');
+
+        $this->assertSame('http://localhost', $url->getBaseUrl());
+    }
+
+    public function testGetPath() {
+        $url = new Url('http://localhost', '/data/%id%/');
+
+        $this->assertSame('/data/%id%', $url->getPath());
+    }
+
+    public function testGetPathOnParsedPath() {
+        $url = new Url('http://localhost', '/data/123/');
+
+        $this->assertSame('/data/123', $url->getPath(true));
+    }
+
+    public function testGetArgument() {
+        $url = new Url('http://localhost', '/data/123/');
+        $url->setArgument('arg_name', 'arg_value');
+
+        $this->assertSame('arg_value', $url->getArgument('arg_name'));
+    }
+
+    public function testGetArgumentShouldReturnDefaultValue() {
+        $url = new Url('http://localhost', '/data/123/');
+
+        $this->assertNull($url->getArgument('arg_name'));    
+    }
+
+    public function testGetArguments() {
+        $url = new Url('http://localhost', '/data/123/');
+        $url->setArgument('arg_name', 'arg_value');
+
+        $this->assertSame(array('arg_name' => 'arg_value'), $url->getArguments());
+    }
+
+    public function testGetQueryParameter() {
+        $url = new Url('http://localhost', '/data/123/');
+        $url->setQueryParameter('arg_name', 'arg_value');
+
+        $this->assertSame('arg_value', $url->getQueryParameter('arg_name'));
+    }
+
+    public function testGetQueryParameterShouldReturnNull() {
+        $url = new Url('http://localhost', '/data/123/');
+
+        $this->assertNull($url->getQueryParameter('arg_name'));
+    }
+
+    public function testGetQueryParameters() {
+        $url = new Url('http://localhost', '/data/123/');
+        $url->setQueryParameter('arg_name1', 'arg_value1');
+        $url->setQueryParameter('arg_name2', 'arg_value2');
+
+        $this->assertSame(array('arg_name1' => 'arg_value1', 'arg_name2' => 'arg_value2'), $url->getQueryParameters());
     }
 
 }

@@ -2,9 +2,9 @@
 
 namespace ride\library\router;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RouterResultTest extends PHPUnit_Framework_TestCase {
+class RouterResultTest extends TestCase {
 
     /**
      * @var ride\library\router\RouterResult

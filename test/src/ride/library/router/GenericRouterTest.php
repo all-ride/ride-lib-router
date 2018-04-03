@@ -2,9 +2,9 @@
 
 namespace ride\library\router;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GenericRouterTest extends PHPUnit_Framework_TestCase {
+class GenericRouterTest extends TestCase {
 
     public function testConstruct() {
         $container = new RouteContainer();

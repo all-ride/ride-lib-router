@@ -2,9 +2,9 @@
 
 namespace ride\library\router;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RouteContainerTest extends PHPUnit_Framework_TestCase {
+class RouteContainerTest extends TestCase {
 
     /**
      * @var RouteContainer
@@ -30,6 +30,7 @@ class RouteContainerTest extends PHPUnit_Framework_TestCase {
 
         $route = new Route('/path', 'callback', 'id');
         $route2 = new Route('/path2', 'callback2', 'id2');
+        $route3 = new Route('/path2', 'callback2', 'id2');
 
         $this->container->setRoute($route);
         $this->container->setRoute($route2);
@@ -72,6 +73,43 @@ class RouteContainerTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(1, count($this->container->getAliases()));
         $this->assertNull($this->container->getAliasByPath('/path'));
+    }
+
+    public function testGetSource() {
+        $this->container->setSource('source_string');
+
+        $this->assertSame('source_string', $this->container->getSource());
+    }
+
+    public function testCreateRoute() {
+        $this->assertInstanceOf('ride\library\router\Route', $this->container->createRoute('/', 'callback'));
+    }
+
+    public function testGetRouteByPath() {
+        $this->assertNull($this->container->getRouteByPath('/'));
+    }
+
+    public function testGetRouteByPathShouldReturnRoute() {
+        $this->container->setRoute(new Route('/path', 'callback'));
+
+        $this->assertInstanceOf('ride\library\router\Route', $this->container->getRouteByPath('/path'));
+    }
+
+    public function testCreateAlias() {
+        $this->assertInstanceOf('ride\library\router\Alias', $this->container->createAlias('/path', '/alias/path'));
+    }
+
+    /**
+     * @expectedException ride\library\router\exception\RouterException
+     */
+    public function testGerUrlShouldThrowRouterException() {
+        $this->assertNull($this->container->getUrl('http://localhost', '123'));
+    }
+
+    public function testGetUrlAlias() {
+        $url = new Url('http://localhost', '/data/123/');
+
+        $this->assertSame('http://localhost/data/123', $this->container->getUrlAlias($url));
     }
 
 }
